@@ -165,8 +165,11 @@ def main():
 if __name__ == '__main__':
     main()
 
-"""
 
+
+
+"""
+useful commands for the bot.
 #https://api.telegram.org/bot<your-bot-token>/getme
 
 #https://api.telegram.org/bot<your-bot-token>/getUpdates
@@ -185,90 +188,6 @@ if __name__ == '__main__':
 
 """
 
-"""
 
 
 
-user_states = {}
-
-
-
-def handle(msg):
-
-    chat_id = msg['chat']['id']
-
-
-
-    if chat_id not in user_states:
-
-        user_states[chat_id] = some initial state ...
-
-
-
-    state = user_states[chat_id]
-
-
-
-    # respond according to `state`
-
-
-
-"""
-
-"""
-
-
-
-
-
-
-
-    For example, below is a bot that counts how many messages have been sent by an individual user. 
-
-    If no message is received after 10 seconds, it starts over (timeout). The counting is done per chat - that's the important point.
-
-import sys
-
-import telepot
-
-from telepot.delegate import per_chat_id, create_open
-
-
-
-class MessageCounter(telepot.helper.ChatHandler):
-
-    def __init__(self, seed_tuple, timeout):
-
-        super(MessageCounter, self).__init__(seed_tuple, timeout)
-
-        self._count = 0
-
-
-
-    def on_message(self, msg):
-
-        self._count += 1
-
-        self.sender.sendMessage(self._count)
-
-
-
-TOKEN = sys.argv[1]  # get token from command-line
-
-
-
-bot = telepot.DelegatorBot(TOKEN, [
-
-    (per_chat_id(), create_open(MessageCounter, timeout=10)),
-
-])
-
-bot.notifyOnMessage(run_forever=True)
-
-
-
-
-
-
-
-"""
