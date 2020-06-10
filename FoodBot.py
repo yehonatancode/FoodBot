@@ -5,6 +5,9 @@ import enum
 import requests
 import time
 import datetime
+import sys
+from telepot.delegate import per_chat_id, create_open
+
 
 
 import random
@@ -87,10 +90,8 @@ def order_availability(flag):
     if flag==False: flag = True
 
 
-def main():
-    #orders are
-    orders = {}
-    order_counter = 0
+def total_execution(orders, order_counter):
+    # orders are
 
     can_client_order = True
     localtime = time.localtime(time.time())
@@ -103,8 +104,6 @@ def main():
     general_message(chat, start_msg)
 
     last_textchat = (None, None)
-
-
 
     time.sleep(5)  # the delay is made to allow the bot to recognize the user's input in time.
 
@@ -135,13 +134,31 @@ def main():
                 order_time = time_of_order()
                 string = str(Food(int(text)))
                 general_message(chat, "your order is " + string + " " + "at " + order_time)
-                orders[str(chat)] = order_counter #adding the latest order to dictionary, by chat_id key, and order priority
+                orders[str(chat)] = text  # adding the latest order to dictionary, by chat_id key, and order priority
                 order_counter += 1
                 can_client_order = False
-                timer = threading.Timer(60*60*24, order_availability(can_client_order)) #waiting for 24 hours, in a seconds converter
+                timer = threading.Timer(60 * 60 * 24, order_availability(
+                    can_client_order))  # waiting for 24 hours, in a seconds converter
                 timer.start()
-                print(orders)
+                print(str(orders) +" , total orders currently" + str(order_counter))
 
+#handling multiple requests
+
+
+def main():
+    #users_id= {}
+    #orders are
+    orders = {}
+    order_counter = 0
+
+    bot = telepot.DelegatorBot(token, [
+        (per_chat_id(), create_open(total_execution(orders, order_counter), timeout=10)),
+    ])
+
+#finally I inserted the entire order program into a func named total_excection.
+#to  manage the total orders I made two global objects named orders, and total order number.
+#after that I used a made library named telepot to manage multiple, parallel chats
+#and running for each chat the program.
 
 
 if __name__ == '__main__':
