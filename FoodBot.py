@@ -146,8 +146,9 @@ def total_execution(orders, order_counter):
 
 
 def main():
-    #users_id= {}
-    #orders are
+
+    #orders are managed by user id(chat id), and their specific order
+    #total orders amount is saved into counter.
     orders = {}
     order_counter = 0
 
